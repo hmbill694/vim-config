@@ -23,20 +23,23 @@ Plug 'peitalin/vim-jsx-typescript'
 Plug 'styled-components/vim-styled-components', { 'branch': 'main' }
 Plug 'jparise/vim-graphql'
 
+Plug 'HerringtonDarkholme/yats.vim'
+
 " COC for language server shit
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-let g:coc_global_extensions = [
-  \ 'coc-tsserver'
-  \ ]
-" COC Prettier and ESLINT
-if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
-  let g:coc_global_extensions += ['coc-prettier']
-endif
 
-if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
-  let g:coc_global_extensions += ['coc-eslint']
-endif
-
+"let g:coc_global_extensions = [
+"  \ 'coc-tsserver'
+"  \ ]
+"" COC Prettier and ESLINT
+"if isdirectory('./node_modules') && isdirectory('./node_modules/prettier')
+"  let g:coc_global_extensions += ['coc-prettier']
+"endif
+"
+"if isdirectory('./node_modules') && isdirectory('./node_modules/eslint')
+"  let g:coc_global_extensions += ['coc-eslint']
+"endif
+"
 " Initialize plugin system
 call plug#end()
 "--------------------------------------------------
@@ -66,6 +69,9 @@ autocmd BufEnter * if bufname('#') =~ 'NERD_tree_\d\+' && bufname('%') !~ 'NERD_
 
 " Auto reload changed files
 set autoread
+
+" No swap files
+set noswapfile
 
 " Always change current directory to current-editing-file dir
 "set autochdir
@@ -97,6 +103,7 @@ set title
 " open preview window at bottom
 set splitbelow
 
+" open window to the right when split
 set splitright
 
 " Hide preview window for completion
@@ -131,7 +138,7 @@ set listchars=tab:⇥\ ,trail:·,extends:⋯,precedes:⋯,nbsp:~
 set scrolloff=10
 
 " Numbers of columns to keep to the left and to the right off the screen
-set sidescrolloff=10
+set sidescrolloff=20
 
 " Vim will move to the previous/next line after reaching first/last char in
 " the line with this command (you can add 'h' or 'l' here as well)
@@ -247,9 +254,16 @@ nmap <S-Down> <C-w><Down>
 " Resize splits
 nmap <leader>w <C-w>w
 nmap <C-S-Up> <C-w>+
-nmap <C-S-Left> <C-w><
-nmap <C-S-Right> <C-w>>
+nmap <C-S-Right> <C-w><
+nmap <C-S-Left> <C-w>>
 nmap <C-S-Down> <C-w>-
+
+" Terminal splits
+tmap <leader>w <C-w>w
+tmap <S-Up> <C-w>k
+tmap <S-Left> <C-w>h
+tmap <S-Right> <C-w>l
+tmap <S-Down> <C-w>j
 
 " FZF 
 nnoremap <silent> <C-p> :Files<CR>
@@ -259,3 +273,17 @@ nnoremap <leader>n :NERDTreeFocus<CR>
 nnoremap <C-n> :NERDTree<CR>
 nnoremap <C-t> :NERDTreeToggle<CR>
 nnoremap <C-f> :NERDTreeFind<CR>
+nmap <Leader>r :NERDTreeRefreshRoot<CR>
+
+
+
+" COC completion
+" Use tab for trigger completion with characters ahead and navigate.
+" NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
